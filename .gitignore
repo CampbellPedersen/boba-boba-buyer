@@ -129,5 +129,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# sheets directory contents
+# sheets directory contents minus example input
 sheets/*
+!sheets/example.csv
