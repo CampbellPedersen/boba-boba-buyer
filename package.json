@@ -1,0 +1,20 @@
+{
+  "name": "boba-boba-buyer",
+  "version": "1.0.0",
+  "description": "Automates buying Boba Boba stock via their Shopify storefront",
+  "main": "add-to-cart.js",
+  "scripts": {
+    "add-to-cart": "node ./add-to-cart"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CampbellPedersen/boba-boba-buyer.git"
+  },
+  "keywords": [],
+  "author": "campbelljip@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CampbellPedersen/boba-boba-buyer/issues"
+  },
+  "homepage": "https://github.com/CampbellPedersen/boba-boba-buyer#readme"
+}
