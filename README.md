@@ -1,5 +1,5 @@
 # Bobaboba Buyer
-Automates buying Boba Boba stock via their Shopify storefront
+Automates buying Bobaboba stock via their Shopify storefront
 
 ## Setup
 1. [Install Node](https://nodejs.org/en/download/prebuilt-installer) to run this script. Must be minimum version 20.6.0. If you can run the `node --version` command in your terminal (`cmd.exe` for Windows), you've completed this step.
