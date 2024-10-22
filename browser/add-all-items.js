@@ -12,6 +12,7 @@ const getExecutablePathFromEnv = () => {
 const launchSite = async (executablePath, siteUrl) => {
   const browser = await reconnectOrLaunch(executablePath)
   const page = await browser.newPage();
+  await page.setViewport({width: 1920, height: 1080})
   await page.goto(siteUrl);
   return page;
 };
@@ -63,6 +64,7 @@ const findAndAddItem = (page) => async ([name, quantity]) => {
  * @param {[string, string]} siteDetails [siteUrl, password]
  */
 const addAllItems = async (rows, siteDetails) => {
+  console.log(rows);
   const executablePath = getExecutablePathFromEnv();
   const [siteUrl, password] = siteDetails;
   const page = await launchSite(executablePath, siteUrl);
@@ -71,6 +73,7 @@ const addAllItems = async (rows, siteDetails) => {
   const missedItems = [];
   
   for (const row of rows) {
+    const [name, quantity] = row;
     try {
       // Try add the item
       console.info(`Adding ${quantity} ${name}...`)
@@ -79,8 +82,8 @@ const addAllItems = async (rows, siteDetails) => {
 
     } catch (e) {
       // Print a message to console if fails
-      console.error(`Failed to add ${row[1]} ${row[0]}: ${e.message}`);
-      missedItems.push(row[0])
+      console.error(`Failed to add ${quantity} ${name}: ${e.message}`);
+      missedItems.push(name)
     } finally {
       // Navigate back to homepage regardless of success/failure
       await page.goto(`${siteUrl}/collections/all`);

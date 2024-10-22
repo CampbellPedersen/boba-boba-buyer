@@ -20,6 +20,8 @@ npm install
   npm run add-to-cart -- "filename.csv"
 ```
 
+> IMPORTANT: Your shopping cart must be empty to begin with for this script to work correctly
+
 ## Development Guide
 To install the correct version of node for dev, [install nvm](https://github.com/nvm-sh/nvm) and run the following commands:
 ```bash
