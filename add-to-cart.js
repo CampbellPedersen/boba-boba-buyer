@@ -37,10 +37,11 @@ const parseName = (name) => name.trim();
 
 const parseOrder = (order) => {
   const trimmed = order.trim();
-  // If YES or ORDER specifically, convert to 1.0
-  if (['YES', 'ORDER'].includes(trimmed)) return '1.0';
+  if (['YES'].includes(trimmed)) return 1;
+  if (['NO', 'ORDER'].includes(trimmed)) return 0;
+  if (isNaN(+trimmed)) return 0;
 
-  return trimmed;
+  return +trimmed;
 }
 
 const createTuples = (rawCsv) =>
@@ -48,7 +49,7 @@ const createTuples = (rawCsv) =>
 
 
 const filterTuples = (tuples) => {
-  return tuples.filter(([name, order]) => !!name && !!order && order !== 'NO')
+  return tuples.filter(([name, order]) => !!name && !!order)
 }
 
 // MAIN
@@ -64,7 +65,11 @@ try {
   // Filter by rows we need to order
   const filtered = filterTuples(tuples);
   // Now go to the browser and order all the items
-  addAllItems(filtered, siteDetails)
+  (async () => {
+    await addAllItems(filtered, siteDetails);
+    process.exit(0);
+  })()
 } catch (e) {
   console.log(e.message)
+  process.exit(1)
 }
