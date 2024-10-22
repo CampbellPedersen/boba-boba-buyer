@@ -11,7 +11,7 @@ const getExecutablePathFromEnv = () => {
 
 const launchSite = async (executablePath, siteUrl) => {
   const browser = await reconnectOrLaunch(executablePath)
-  const [page] = await browser.pages();
+  const page = await browser.newPage();
   await page.goto(siteUrl);
   return page;
 };
