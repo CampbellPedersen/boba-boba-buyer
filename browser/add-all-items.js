@@ -24,23 +24,24 @@ const login = async (page, password) => {
 }
 
 const checkIfCartIsEmpty = async (page) => {
-  const cart = await page.waitForResponse(request => request.url().endsWith('cart.js'));
-  const cartJson = await cart.json();
-  return cartJson.item_count < 1;
+  const emptyMessage = await page.$('text=Your cart is currently empty.', {timeout: 1000});
+  const isEmptyMessageShowing = await emptyMessage.isVisible();
+  return isEmptyMessageShowing;
 }
 
 const emptyCart = async (page) => {
   await page.locator(`header a[href="/cart"]`).click();
-  await page.waitForNavigation({waitUntil: 'load'});
+  await page.waitForNavigation();
   let isCartEmpty = false;
   isCartEmpty = await checkIfCartIsEmpty(page);
+  console.log('Emptying cart...');
   while(!isCartEmpty) {
     await page.locator(`a[data-cart-remove]`).click();
-    await page.waitForRequest(request => request.url().endsWith('change.js'));
+    await page.waitForResponse(request => request.url().endsWith('change.js'));
     isCartEmpty = await checkIfCartIsEmpty(page);
   }
+  console.log('Cart empty.')
   await page.locator(`header a[href="/"]`).click();
-  await page.waitForNavigation({waitUntil: 'load'});
 }
 
 const findAndAddItem = (page) => async ([name, quantity]) => {
@@ -48,19 +49,19 @@ const findAndAddItem = (page) => async ([name, quantity]) => {
   await page.locator('button[data-predictive-search-open-drawer]').click();
   await page.locator('input[placeholder="Search"]').fill(name);
   await Promise.all([
-    page.waitForNavigation({waitUntil: 'load'}),
+    page.waitForNavigation(),
     page.keyboard.press('Enter')
   ]);
   // Select first search result
   await Promise.all([
-    page.waitForNavigation({waitUntil: 'load'}),
-    page.locator('a.full-width-link').click(),
+    page.waitForSelector('text=Add to cart'),
+    page.click('a.full-width-link'),
   ]);
   // Add to cart and view cart
   await page.click('text=Add to cart');
   await page.waitForRequest(request => request.url().endsWith('cart.js'))
   await Promise.all([
-    page.waitForNavigation({waitUntil: 'load'}),
+    page.waitForNavigation(),
     page.locator(`header a[href="/cart"]`).click(),
   ])
   // Add quantity if needed

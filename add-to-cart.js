@@ -1,9 +1,16 @@
-const fs = require('node:fs');
-const csv = require('csv-parse/sync')
+const fs = require('fs');
+const path = require('path');
+const dotenv = require('dotenv');
+const {parse} = require('csv-parse/sync')
+const {getCurrentWorkingDirectory} = require('./util/working-directory');
 const {addAllItems} = require('./browser/add-all-items');
+const {initPolyfills} = require('./util/init-polyfill');
 
-const getFilenameFromArgv = () => {
-  const f = process.argv[2];
+dotenv.config({ path: path.join(getCurrentWorkingDirectory(), '.env') })
+initPolyfills();
+
+const getFilenameFromEnv = () => {
+  const f = process.env.CSV_FILENAME;
 
   if (!f || !f.endsWith('.csv')) {
     console.error('CSV filename required');
@@ -25,9 +32,9 @@ const getSiteDetailsFromEnv = () => {
 }
 
 const loadCSV = (filename) => {
-  const processedFilename = filename.replaceAll('/', ':')
-  const file = fs.readFileSync(`${__dirname}/sheets/${processedFilename}`).toString();
-  const parsedCSV = csv.parse(file);
+  const filePath = path.join(getCurrentWorkingDirectory(), filename);
+  const file = fs.readFileSync(filePath).toString();
+  const parsedCSV = parse(file);
   // Remove header
   parsedCSV.shift();
   return parsedCSV;
@@ -53,10 +60,9 @@ const filterTuples = (tuples) => {
 }
 
 // MAIN
-
 try {
   // First retrieve arguments
-  const filename= getFilenameFromArgv();
+  const filename= getFilenameFromEnv();
   const siteDetails = getSiteDetailsFromEnv();
   // Loads CSV from file into an array of rows
   const csv = loadCSV(filename)

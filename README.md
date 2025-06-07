@@ -1,32 +1,42 @@
 # Bobaboba Buyer
 Automates buying Bobaboba stock via their Shopify storefront
 
-## Setup
-1. [Install Node](https://nodejs.org/en/download/prebuilt-installer) to run this script. Must be minimum version 20.6.0. If you can run the `node --version` command in your terminal (`cmd.exe` for Windows), you've completed this step.
-2. Navigate your terminal to the base directory of this project and run the following command:
-```bash
-npm install
-```
-3. Copy the `.env.sample` file in this directory and rename it to `.env`. Then, fill in the relevant values:
-    1. SITE_URL: The web address of the storefront
-    2. SITE_PASSWORD: The password to the storefront
-    3. CHROME_PATH: The full file path to your Chrome executable
+## Running the Executable
+The executable itself is not available in this repository. You can either:
+- Built it yourself with the instructions below
+- Ask me for a copy if you aren't a dev
 
-
-## Running the Script
-1. Download the order sheet as a `.csv` file and drop it into the `sheets` directory.
-2. Navigate your terminal (`cmd.exe` for Windows) to the base directory of this project and run the following command:
-```bash
-  npm run add-to-cart -- "filename.csv"
-```
-
-> IMPORTANT: Your shopping cart must be empty to begin with for this script to work correctly
+To run the executable:
+1. Put your exported csv file in the same directory as the executable.
+2. Copy the `.env.sample` file to a new file named `.env` also in the same directory and fill out the relevant values. Note: You can Google the usual values for `CHROME_PATH` fairly easily
+3. Run the relevant executable (Windows and MacOS x64 support) and watch the magic!
 
 ## Development Guide
-To install the correct version of node for dev, [install nvm](https://github.com/nvm-sh/nvm) and run the following commands:
+
+## Setup
+To use the correct version of Node/npm and install dependencies for dev, [install nvm](https://github.com/nvm-sh/nvm) and run the following commands in the root directory of this repo:
 ```bash
-nvm install # If not already installed
+npm install nvm -g # If not already installed
+nvm install
 nvm use
+npm install
 ```
 
+## Running the Script
+Make sure you copy `.env.sample` to a new file called `.env` and populate with appropriate values Afterwards, just run:
+```bash
+  npm run start
+```
 You should be good to go!
+
+## Building and Running the Executable
+```bash
+  npm run build
+
+  # on Windows
+  dist\boba-boba-buyer-win.exe
+
+  # on Mac
+  ./dist/boba-boba-buyer-macos
+```
+Note: All filepaths are relative to the executable.

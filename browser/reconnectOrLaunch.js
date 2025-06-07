@@ -4,7 +4,7 @@ const puppeteer = require("puppeteer");
 
 const reconnectOrLaunch = async (
   executablePath,
-  browserURL = "http://localhost:9222"
+  browserURL = "http://127.0.0.1:9222"
 ) => {
   try {
     return await puppeteer.connect({browserURL});
@@ -14,11 +14,14 @@ const reconnectOrLaunch = async (
 
   // Hack: launch browser manually since browser.launch()
   // doesn't yet support a 'detach' option
+  console.info('Launching browser at', executablePath);
   const childProcess = spawn(
     executablePath,
     [
       `--remote-debugging-port=${browserURL.split(":").pop()}`,
-      `--user-data-dir=/tmp/chrome-debug-profile`,
+      '--no-first-run',
+      '--no-default-browser-check',
+      '--user-data-dir=/tmp/chrome-debug-profile',
     ],
     {
       detached: true,
