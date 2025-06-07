@@ -1,11 +1,11 @@
 {
   "name": "boba-boba-buyer",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Automates buying Boba Boba stock via their Shopify storefront",
-  "main": "add-to-cart.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node ./add-to-cart",
-    "build": "pkg add-to-cart.js -c package.json --ignore-missing"
+    "start": "node ./index.js",
+    "build": "pkg index.js -c package.json --ignore-missing"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,7 @@
     "puppeteer": "24.9.0"
   },
   "devDependencies": {
-    "pkg": "^5.8.1"
+    "pkg": "5.8.1"
   },
   "engines": {
     "node": ">=20.6.0"

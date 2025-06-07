@@ -1,10 +1,12 @@
-const {setTimeout} = require("node:timers/promises");
-const {spawn} = require("node:child_process");
+const {setTimeout} = require("timers/promises");
+const {spawn} = require("child_process");
+const path = require("path");
 const puppeteer = require("puppeteer");
+const {getCurrentWorkingDirectory} = require('../util/working-directory');
 
 const reconnectOrLaunch = async (
   executablePath,
-  browserURL = "http://127.0.0.1:9222"
+  browserURL = "http://localhost:9222"
 ) => {
   try {
     return await puppeteer.connect({browserURL});
@@ -19,9 +21,9 @@ const reconnectOrLaunch = async (
     executablePath,
     [
       `--remote-debugging-port=${browserURL.split(":").pop()}`,
+      `--user-data-dir=${path.join(getCurrentWorkingDirectory(), 'tmp', 'chrome-debug-profile')}`,
       '--no-first-run',
       '--no-default-browser-check',
-      '--user-data-dir=/tmp/chrome-debug-profile',
     ],
     {
       detached: true,
